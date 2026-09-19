@@ -1,0 +1,44 @@
+# Baseline: a 65-year-old with $1M, spending $40k/yr (4%), planning to age 95.
+# Everything is in REAL (today's) dollars and REAL returns.
+
+[timeline]
+current_age = 65
+retire_age  = 65
+end_age     = 95
+
+[portfolio]
+starting_balance = 1_000_000
+weights   = [0.6, 0.4]     # must match the order of [[assets]] below
+rebalance = true
+fee       = 0.003          # 0.30% / yr expense ratio
+
+[[assets]]
+name  = "stocks"
+mu    = 0.060              # expected REAL arithmetic return
+sigma = 0.170
+
+[[assets]]
+name  = "bonds"
+mu    = 0.020
+sigma = 0.070
+
+[returns]
+model       = "lognormal"  # lognormal | student_t | bootstrap | block_bootstrap
+correlation = [[1.0, 0.1], [0.1, 1.0]]
+df          = 5            # student_t: degrees of freedom (lower = fatter tails)
+block_len   = 5            # block_bootstrap: years per block
+history_path  = "../data/us_annual_returns.csv"   # relative to this file
+match_moments = true       # rescale history to the mu/sigma above
+
+[cashflow]
+annual_contribution    = 0
+social_security_age    = 67
+social_security_annual = 0
+
+[spending]
+rule   = "fixed"           # fixed | percent | guardrails
+annual = 40_000
+
+[simulation]
+n_sims = 20_000
+seed   = 42

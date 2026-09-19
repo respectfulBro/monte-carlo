@@ -1,0 +1,10 @@
+[project]
+name = "retirement_mc"
+version = "0.1.0"
+description = "Monte Carlo retirement simulator (learning project)"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26", "pandas>=2.0", "matplotlib>=3.8"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

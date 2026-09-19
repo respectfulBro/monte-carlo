@@ -1,0 +1,44 @@
+# A 35-year-old saving for 30 years, then retiring with Social Security at 67.
+
+[timeline]
+current_age = 35
+retire_age  = 65
+end_age     = 95
+
+[portfolio]
+starting_balance = 150_000
+weights   = [0.7, 0.3]
+rebalance = true
+fee       = 0.003
+
+[[assets]]
+name  = "stocks"
+mu    = 0.060
+sigma = 0.170
+
+[[assets]]
+name  = "bonds"
+mu    = 0.020
+sigma = 0.070
+
+[returns]
+model       = "lognormal"
+correlation = [[1.0, 0.1], [0.1, 1.0]]
+df          = 5
+block_len   = 5
+history_path  = "../data/us_annual_returns.csv"
+match_moments = true
+
+[cashflow]
+annual_contribution    = 20_000   # real $/yr
+contribution_growth    = 0.01     # contributions grow 1%/yr faster than inflation (career raises)
+social_security_age    = 67
+social_security_annual = 30_000   # real $/yr
+
+[spending]
+rule   = "fixed"
+annual = 80_000
+
+[simulation]
+n_sims = 20_000
+seed   = 42

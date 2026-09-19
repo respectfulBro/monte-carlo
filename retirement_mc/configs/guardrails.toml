@@ -1,0 +1,49 @@
+# Same retiree as retiree.toml (same $40k start), but spending adapts to the market
+# (Guyton-Klinger style guardrails). Compare P(success) AND the spending metrics:
+# ruin probability alone is a misleading score for a rule that cuts spending instead of running dry.
+
+[timeline]
+current_age = 65
+retire_age  = 65
+end_age     = 95
+
+[portfolio]
+starting_balance = 1_000_000
+weights   = [0.6, 0.4]
+rebalance = true
+fee       = 0.003
+
+[[assets]]
+name  = "stocks"
+mu    = 0.060
+sigma = 0.170
+
+[[assets]]
+name  = "bonds"
+mu    = 0.020
+sigma = 0.070
+
+[returns]
+model       = "lognormal"
+correlation = [[1.0, 0.1], [0.1, 1.0]]
+df          = 5
+block_len   = 5
+history_path  = "../data/us_annual_returns.csv"
+match_moments = true
+
+[cashflow]
+annual_contribution    = 0
+social_security_age    = 67
+social_security_annual = 0
+
+[spending]
+rule       = "guardrails"
+annual     = 40_000
+upper_band = 0.20          # cut spending if the withdrawal rate drifts 20% above its start value
+lower_band = 0.20          # raise spending if it drifts 20% below
+cut_pct    = 0.10
+raise_pct  = 0.10
+
+[simulation]
+n_sims = 20_000
+seed   = 42
